@@ -1,6 +1,7 @@
-# HR App 　人事管理アプリ ／MySQL✍️
+# HR App 　人事管理アプリ ／MySQL／Tanstack Query✍️
 
 社員情報を登録、閲覧、検索、編集できるアプリです。  
+※Tanstack Queryを使い書き換えたバージョン
 
 #### フロントエンド
 
