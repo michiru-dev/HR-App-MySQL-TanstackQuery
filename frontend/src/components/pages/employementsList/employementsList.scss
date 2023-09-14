@@ -1,0 +1,88 @@
+.employeeListBox {
+  display: flex;
+  justify-content: center;
+}
+
+.employeeList th,
+.employeeList td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.employeeList th {
+  font-weight: bold;
+}
+
+.employeeListButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.employeeModalBox {
+  text-align: left;
+}
+
+.modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 450px;
+  background-color: #fff9f9;
+  box-shadow: 0 3px 6px 3px rgba(107, 107, 107, 0.1);
+  color: black;
+  border-radius: 10px;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.closeButton {
+  position: absolute;
+  background-color: #fff9f9;
+  top: 3px;
+  right: 5px;
+}
+
+.deleteButton {
+  color: rgb(177, 176, 176);
+  background-color: #fbfafa;
+}
+.deleteButton:hover {
+  color: #555;
+}
+
+@media screen and (max-width: 800px) {
+  .modal {
+    width: 100%;
+  }
+
+  .employeeListBox {
+    overflow-x: auto;
+  }
+
+  .employeeList {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .employeeList th,
+  .employeeList td {
+    overflow: hidden;
+    padding: 0;
+  }
+  .employeeListEditButton {
+    padding: 0;
+  }
+
+  .employeeInfoNum {
+    writing-mode: vertical-rl;
+    white-space: pre;
+  }
+}

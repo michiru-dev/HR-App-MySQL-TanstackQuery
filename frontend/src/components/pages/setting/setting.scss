@@ -1,0 +1,25 @@
+li {
+  list-style: none;
+}
+
+.settingBox {
+  display: flex;
+  justify-content: center;
+}
+
+.settingEditButton,
+.settingDeleteButton {
+  background-color: white;
+}
+
+.showItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addSettingItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2vh;
+}

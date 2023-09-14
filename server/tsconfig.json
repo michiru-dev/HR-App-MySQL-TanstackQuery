@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true,
+    "typeRoots": ["./src", "./node_modules/@types"] //tsが型定義を探すためのオプション
+    //配列の順番で優先度が決まる。2番目のやつはデフォルトでそこにいくので指定しなくてもOK
+  }
+}
