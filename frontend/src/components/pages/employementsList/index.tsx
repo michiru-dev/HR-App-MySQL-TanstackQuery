@@ -10,6 +10,7 @@ import EmployeeInfoList, {
 } from '../../common/EmployeeInfoList.tsx'
 import Layout from '../../common/UI/Layout'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
+import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
 
 function EmployeeList() {
   const dispatch = useAppDispatch()
@@ -17,12 +18,9 @@ function EmployeeList() {
     null
   )
 
-  const employeeData = useAppSelector((state) => state.employee.employeeData)
-  const isLoading = useAppSelector((state) => state.employee.isLoading)
-
-  useEffect(() => {
-    dispatch(fetchEmployeeData())
-  }, [])
+  const { isLoading, data, refetch } = useQueryEmployeeData({
+    enabled: true,
+  })
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {
@@ -58,14 +56,16 @@ function EmployeeList() {
       {isLoading && <LoadingSpinner />}
       <Layout>
         <div className="employeeListBox">
-          <EmployeeInfoList
-            employeeData={employeeData}
-            handleEditClick={handleEditClick}
-            handleSaveButtonClick={handleSaveButtonClick}
-            handleCloseButton={handleCloseButton}
-            handleDeleteButton={handleDeletButton}
-            editEmployeeIndex={editEmployeeIndex}
-          />
+          {Array.isArray(data) && (
+            <EmployeeInfoList
+              employeeData={data}
+              handleEditClick={handleEditClick}
+              handleSaveButtonClick={handleSaveButtonClick}
+              handleCloseButton={handleCloseButton}
+              handleDeleteButton={handleDeletButton}
+              editEmployeeIndex={editEmployeeIndex}
+            />
+          )}
         </div>
       </Layout>
     </>

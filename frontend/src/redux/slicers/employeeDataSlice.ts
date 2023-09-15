@@ -20,7 +20,7 @@ const addEmployeeData = createAsyncThunk(
 
 //日付が"YYYY-MM-DDTHH:mm:ss.sssZ"この形で返ってくるので
 //Tで区切ってその配列の一つ目[0]を返す
-const convertNumber = (res: AxiosResponse<EmployeeBase[]>) => {
+export const convertNumber = (res: AxiosResponse<EmployeeBase[]>) => {
   return res.data.map((employee: EmployeeBase) => {
     if (employee.hire_date) {
       employee.hire_date = employee.hire_date.split('T')[0]
