@@ -33,21 +33,21 @@ export const convertNumber = (res: AxiosResponse<EmployeeBase[]>) => {
 }
 
 //💡取得(get)
-const fetchEmployeeData = createAsyncThunk(
-  'employee/fetchEmployeeData',
-  async () => {
-    const { headers } = getTokenInfo()
-    const employeeArr = await axiosInstance
-      .get('/employees', { headers })
-      .then((res) => {
-        return convertNumber(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    return { employeeArr }
-  }
-)
+// const fetchEmployeeData = createAsyncThunk(
+//   'employee/fetchEmployeeData',
+//   async () => {
+//     const { headers } = getTokenInfo()
+//     const employeeArr = await axiosInstance
+//       .get('/employees', { headers })
+//       .then((res) => {
+//         return convertNumber(res)
+//       })
+//       .catch((err) => {
+//         console.log(err)
+//       })
+//     return { employeeArr }
+//   }
+// )
 
 //💡検索
 const fetchSearchedEmployee = createAsyncThunk(
@@ -119,20 +119,20 @@ export const employeeDataSlice = createSlice({
       .addCase(addEmployeeData.rejected, (state) => {
         state.isLoading = false
       })
-      //💡取得
-      .addCase(fetchEmployeeData.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(fetchEmployeeData.fulfilled, (state, action) => {
-        if (Array.isArray(action.payload.employeeArr)) {
-          // 返り値が配列であることをチェック
-          state.employeeData = action.payload.employeeArr
-        }
-        state.isLoading = false
-      })
-      .addCase(fetchEmployeeData.rejected, (state) => {
-        state.isLoading = false
-      })
+      // //💡取得
+      // .addCase(fetchEmployeeData.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(fetchEmployeeData.fulfilled, (state, action) => {
+      //   if (Array.isArray(action.payload.employeeArr)) {
+      //     // 返り値が配列であることをチェック
+      //     state.employeeData = action.payload.employeeArr
+      //   }
+      //   state.isLoading = false
+      // })
+      // .addCase(fetchEmployeeData.rejected, (state) => {
+      //   state.isLoading = false
+      // })
       //💡検索値を探す
       .addCase(fetchSearchedEmployee.pending, (state) => {
         state.isLoading = true
@@ -171,7 +171,7 @@ export const employeeDataSlice = createSlice({
 
 export {
   fetchSearchedEmployee,
-  fetchEmployeeData,
+  // fetchEmployeeData,
   editEmployeeData,
   deleteEmployeeData,
   addEmployeeData,

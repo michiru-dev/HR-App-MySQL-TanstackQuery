@@ -14,7 +14,7 @@ export type collectionNameBase =
   | 'degree'
 
 export type SettingActions = {
-  settingType: OptionBase[]
+  settingType: OptionBase[] | undefined
   collectionName: collectionNameBase
 }
 
@@ -52,6 +52,7 @@ export const useSettingInputs = ({
 
   //編集クリックされた時
   const handleEditClick = (index: number) => {
+    if (typeof settingType === 'undefined') return
     // これらが更新されることによってレンダリングがかかりretrun内のmapが再始動する
     setEditIndex(index)
     setEditedName(settingType[index].name)

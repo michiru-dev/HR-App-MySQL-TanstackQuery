@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   deleteEmployeeData,
   editEmployeeData,
-  fetchEmployeeData,
+  // fetchEmployeeData,
 } from '../../../redux/slicers/employeeDataSlice'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { useAppDispatch } from '../../../redux/hooks'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
 } from '../../common/EmployeeInfoList.tsx'
@@ -34,7 +34,8 @@ function EmployeeList() {
   ) => {
     if (typeof id === 'undefined') return
     await dispatch(editEmployeeData({ updatedEmployeeData, id }))
-    await dispatch(fetchEmployeeData()) //編集して上書きしてきたデータを取得
+    // await dispatch(fetchEmployeeData()) //編集して上書きしてきたデータを取得
+    await refetch()
     setEditEmployeeIndex(null)
   }
 
@@ -47,7 +48,8 @@ function EmployeeList() {
   const handleDeletButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined') return
     await dispatch(deleteEmployeeData(docId))
-    await dispatch(fetchEmployeeData()) //古いデータを見た目からもなくす
+    // await dispatch(fetchEmployeeData()) //古いデータを見た目からもなくす
+    await refetch()
     setEditEmployeeIndex(null)
   }
 

@@ -12,36 +12,36 @@ import 'firebase/compat/firestore'
 import { axiosInstance } from '../../axios'
 import { getTokenInfo } from '../../utils'
 
-//💡値を取得(get)
-//reduxの中でapiの呼び出しは禁止のためcreateAsyncThunkを使う・下の方のextrareducersとセット
-const fetchHrOptionType = createAsyncThunk<{
-  //returnの型
-  contractTypes: Array<OptionBase>
-  departmentTypes: Array<OptionBase>
-  positionTypes: Array<OptionBase>
-  degreeTypes: Array<OptionBase>
-}>('hrOptions/fetchHrOptionType', async () => {
-  const [contractArr, departmentArr, positionArr, degreeArr] =
-    //Promise.allは並列で実行されるためfetchContractを待ってfetchDepartmentsをしたい場合はNG
-    //引数には配列
-    await Promise.all([
-      fetchContract(),
-      fetchDepartments(),
-      fetchPositions(),
-      fetchdegree(),
-    ]).catch((err) => {
-      console.log(err)
-      throw new Error(err) //throwはreturnと同じでそこで処理をストップするため代入も起こらない
-    })
+// //💡値を取得(get)
+// //reduxの中でapiの呼び出しは禁止のためcreateAsyncThunkを使う・下の方のextrareducersとセット
+// const fetchHrOptionType = createAsyncThunk<{
+//   //returnの型
+//   contractTypes: Array<OptionBase>
+//   departmentTypes: Array<OptionBase>
+//   positionTypes: Array<OptionBase>
+//   degreeTypes: Array<OptionBase>
+// }>('hrOptions/fetchHrOptionType', async () => {
+//   const [contractArr, departmentArr, positionArr, degreeArr] =
+//     //Promise.allは並列で実行されるためfetchContractを待ってfetchDepartmentsをしたい場合はNG
+//     //引数には配列
+//     await Promise.all([
+//       fetchContract(),
+//       fetchDepartments(),
+//       fetchPositions(),
+//       fetchdegree(),
+//     ]).catch((err) => {
+//       console.log(err)
+//       throw new Error(err) //throwはreturnと同じでそこで処理をストップするため代入も起こらない
+//     })
 
-  //必ずobjectでreturn、リターンするものに名前をつける
-  return {
-    contractTypes: contractArr,
-    departmentTypes: departmentArr,
-    positionTypes: positionArr,
-    degreeTypes: degreeArr,
-  }
-})
+//   //必ずobjectでreturn、リターンするものに名前をつける
+//   return {
+//     contractTypes: contractArr,
+//     departmentTypes: departmentArr,
+//     positionTypes: positionArr,
+//     degreeTypes: degreeArr,
+//   }
+// })
 
 //💡追加(post)
 const addHrOptionData = createAsyncThunk<
@@ -184,20 +184,20 @@ export const optionsSlice = createSlice({
       .addCase(addHrOptionData.rejected, (state) => {
         state.isLoading = false
       })
-      //項目の取得
-      .addCase(fetchHrOptionType.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(fetchHrOptionType.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.contract = action.payload.contractTypes
-        state.departments = action.payload.departmentTypes
-        state.positions = action.payload.positionTypes
-        state.degree = action.payload.degreeTypes
-      })
-      .addCase(fetchHrOptionType.rejected, (state) => {
-        state.isLoading = false
-      })
+      // //項目の取得
+      // .addCase(fetchHrOptionType.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(fetchHrOptionType.fulfilled, (state, action) => {
+      //   state.isLoading = false
+      //   state.contract = action.payload.contractTypes
+      //   state.departments = action.payload.departmentTypes
+      //   state.positions = action.payload.positionTypes
+      //   state.degree = action.payload.degreeTypes
+      // })
+      // .addCase(fetchHrOptionType.rejected, (state) => {
+      //   state.isLoading = false
+      // })
       //項目の削除
       .addCase(deleteOptionData.pending, (state) => {
         state.isLoading = true
@@ -246,6 +246,6 @@ export const optionsSlice = createSlice({
   },
 })
 
-export { fetchHrOptionType, addHrOptionData, deleteOptionData, editOption }
+export { addHrOptionData, deleteOptionData, editOption }
 
 export default optionsSlice.reducer
