@@ -18,5 +18,6 @@ export function useQueryOptionsData<T extends OptionBase[]>(
         return undefined
       })
   }
+  //queryKeyは配列か文字列。配列にすると['userData', userId]こんな感じで複数のパラメータが表現可能
   return useQuery({ queryKey, queryFn, ...options })
 }

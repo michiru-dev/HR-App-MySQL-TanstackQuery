@@ -44,36 +44,36 @@ import { getTokenInfo } from '../../utils'
 // })
 
 //💡追加(post)
-const addHrOptionData = createAsyncThunk<
-  { optionData: Array<OptionBase>; collectionName: collectionNameBase },
-  { newItem: string; collectionName: collectionNameBase }
->(
-  'hrOptions/addHrOptionData', //createasyncは引数を一つしか渡せないためobjectにしている
-  async ({ newItem, collectionName }) => {
-    const { headers } = getTokenInfo()
-    await axiosInstance
-      .post(`/${collectionName}/post`, { newItem }, { headers })
-      .catch((err) => {
-        console.log(err)
-      })
+// const addHrOptionData = createAsyncThunk<
+//   { optionData: Array<OptionBase>; collectionName: collectionNameBase },
+//   { newItem: string; collectionName: collectionNameBase }
+// >(
+//   'hrOptions/addHrOptionData', //createasyncは引数を一つしか渡せないためobjectにしている
+//   async ({ newItem, collectionName }) => {
+//     const { headers } = getTokenInfo()
+//     await axiosInstance
+//       .post(`/${collectionName}/post`, { newItem }, { headers })
+//       .catch((err) => {
+//         console.log(err)
+//       })
 
-    //新しく追加したところだけにfetchをかける
-    let updatedList: Array<OptionBase> = []
-    if (collectionName === 'contract') {
-      updatedList = await fetchContract()
-    }
-    if (collectionName === 'departments') {
-      updatedList = await fetchDepartments()
-    }
-    if (collectionName === 'positions') {
-      updatedList = await fetchPositions()
-    }
-    if (collectionName === 'degree') {
-      updatedList = await fetchdegree()
-    }
-    return { optionData: updatedList, collectionName: collectionName }
-  }
-)
+//     //新しく追加したところだけにfetchをかける
+//     let updatedList: Array<OptionBase> = []
+//     if (collectionName === 'contract') {
+//       updatedList = await fetchContract()
+//     }
+//     if (collectionName === 'departments') {
+//       updatedList = await fetchDepartments()
+//     }
+//     if (collectionName === 'positions') {
+//       updatedList = await fetchPositions()
+//     }
+//     if (collectionName === 'degree') {
+//       updatedList = await fetchdegree()
+//     }
+//     return { optionData: updatedList, collectionName: collectionName }
+//   }
+// )
 
 //💡削除(delete)
 const deleteOptionData = createAsyncThunk<
@@ -162,28 +162,28 @@ export const optionsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       //項目の追加
-      .addCase(addHrOptionData.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(addHrOptionData.fulfilled, (state, action) => {
-        state.isLoading = false
-        if (action.payload.collectionName === 'contract') {
-          state.contract = action.payload.optionData
-          //配列を新しいのに置き換え
-        }
-        if (action.payload.collectionName === 'departments') {
-          state.departments = action.payload.optionData
-        }
-        if (action.payload.collectionName === 'positions') {
-          state.positions = action.payload.optionData
-        }
-        if (action.payload.collectionName === 'degree') {
-          state.degree = action.payload.optionData
-        }
-      })
-      .addCase(addHrOptionData.rejected, (state) => {
-        state.isLoading = false
-      })
+      // .addCase(addHrOptionData.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(addHrOptionData.fulfilled, (state, action) => {
+      //   state.isLoading = false
+      //   if (action.payload.collectionName === 'contract') {
+      //     state.contract = action.payload.optionData
+      //     //配列を新しいのに置き換え
+      //   }
+      //   if (action.payload.collectionName === 'departments') {
+      //     state.departments = action.payload.optionData
+      //   }
+      //   if (action.payload.collectionName === 'positions') {
+      //     state.positions = action.payload.optionData
+      //   }
+      //   if (action.payload.collectionName === 'degree') {
+      //     state.degree = action.payload.optionData
+      //   }
+      // })
+      // .addCase(addHrOptionData.rejected, (state) => {
+      //   state.isLoading = false
+      // })
       // //項目の取得
       // .addCase(fetchHrOptionType.pending, (state) => {
       //   state.isLoading = true
@@ -246,6 +246,6 @@ export const optionsSlice = createSlice({
   },
 })
 
-export { addHrOptionData, deleteOptionData, editOption }
+export { deleteOptionData, editOption }
 
 export default optionsSlice.reducer

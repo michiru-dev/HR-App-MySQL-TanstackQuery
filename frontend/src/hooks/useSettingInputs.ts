@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { useAppDispatch } from '../redux/hooks'
-import {
-  addHrOptionData,
-  deleteOptionData,
-  editOption,
-} from '../redux/slicers/optionsSlice'
+import { deleteOptionData, editOption } from '../redux/slicers/optionsSlice'
 import { OptionBase } from '../redux/slicers/type'
+import { useMutateOptions } from '../apiHooks/useMutateOptions'
 
 export type collectionNameBase =
   | 'contract'
@@ -27,6 +24,8 @@ export const useSettingInputs = ({
   const [addInput, setAddInput] = useState<string>('')
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [editedName, setEditedName] = useState<string>('')
+  const { mutate, mutateAsync } = useMutateOptions(collectionName)
+  //非同期にしたい時はmutateAsyncを使う
 
   //inputの値が変わった時
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,12 +34,7 @@ export const useSettingInputs = ({
 
   //追加を押した時
   const handleAddClick = () => {
-    dispatch(
-      addHrOptionData({
-        newItem: addInput,
-        collectionName: collectionName,
-      })
-    )
+    mutate(addInput)
     setAddInput('')
   }
 
