@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useAppDispatch } from '../redux/hooks'
-import { deleteOptionData, editOption } from '../redux/slicers/optionsSlice'
+import { editOption } from '../redux/slicers/optionsSlice'
 import { OptionBase } from '../redux/slicers/type'
-import { useMutateOptions } from '../apiHooks/useMutateOptions'
+import { useAddOptions } from '../apiHooks/useAddOptions'
+import { useDeleteOptions } from '../apiHooks/useDeleteOptions'
 
 export type collectionNameBase =
   | 'contract'
@@ -24,8 +25,9 @@ export const useSettingInputs = ({
   const [addInput, setAddInput] = useState<string>('')
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [editedName, setEditedName] = useState<string>('')
-  const { mutate, mutateAsync } = useMutateOptions(collectionName)
+  const { mutate: addMutate, mutateAsync } = useAddOptions(collectionName)
   //非同期にしたい時はmutateAsyncを使う
+  const { mutate: deleteMutate } = useDeleteOptions(collectionName)
 
   //inputの値が変わった時
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,14 +36,13 @@ export const useSettingInputs = ({
 
   //追加を押した時
   const handleAddClick = () => {
-    mutate(addInput)
+    addMutate(addInput)
     setAddInput('')
   }
 
   //削除を押した時
   const handleDeleteClick = (id: string | undefined) => {
-    if (typeof id !== 'undefined')
-      dispatch(deleteOptionData({ id, collectionName }))
+    if (typeof id !== 'undefined') deleteMutate(id)
   }
 
   //編集クリックされた時

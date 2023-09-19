@@ -76,29 +76,29 @@ import { getTokenInfo } from '../../utils'
 // )
 
 //💡削除(delete)
-const deleteOptionData = createAsyncThunk<
-  { newArr: Array<OptionBase>; collectionName: collectionNameBase },
-  { id: string; collectionName: collectionNameBase },
-  { state: RootState }
->('options/deleteOptionData', async ({ id, collectionName }, { getState }) => {
-  //サーバー通信
-  const { headers } = getTokenInfo()
-  await axiosInstance
-    .delete(`/${collectionName}/delete`, {
-      data: { id },
-      headers,
-    })
-    .catch((err) => console.log(err))
+// const deleteOptionData = createAsyncThunk<
+//   { newArr: Array<OptionBase>; collectionName: collectionNameBase },
+//   { id: string; collectionName: collectionNameBase },
+//   { state: RootState }
+// >('options/deleteOptionData', async ({ id, collectionName }, { getState }) => {
+//   //サーバー通信
+//   const { headers } = getTokenInfo()
+//   await axiosInstance
+//     .delete(`/${collectionName}/delete`, {
+//       data: { id },
+//       headers,
+//     })
+//     .catch((err) => console.log(err))
 
-  //reduxに削除したやつ以外の最新の配列をいれる
-  const state = getState()
-  const newArr = state.option[collectionName].filter(
-    (collection: OptionBase) => {
-      return collection.id !== id
-    }
-  )
-  return { newArr: newArr, collectionName: collectionName }
-})
+//   //reduxに削除したやつ以外の最新の配列をいれる
+//   const state = getState()
+//   const newArr = state.option[collectionName].filter(
+//     (collection: OptionBase) => {
+//       return collection.id !== id
+//     }
+//   )
+//   return { newArr: newArr, collectionName: collectionName }
+// })
 
 //💡値を編集
 const editOption = createAsyncThunk(
@@ -199,28 +199,28 @@ export const optionsSlice = createSlice({
       //   state.isLoading = false
       // })
       //項目の削除
-      .addCase(deleteOptionData.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(deleteOptionData.fulfilled, (state, action) => {
-        state.isLoading = false
-        if (action.payload.collectionName === 'contract') {
-          state.contract = action.payload.newArr
-          //配列を新しいのに置き換え
-        }
-        if (action.payload.collectionName === 'departments') {
-          state.departments = action.payload.newArr
-        }
-        if (action.payload.collectionName === 'positions') {
-          state.positions = action.payload.newArr
-        }
-        if (action.payload.collectionName === 'degree') {
-          state.degree = action.payload.newArr
-        }
-      })
-      .addCase(deleteOptionData.rejected, (state) => {
-        state.isLoading = false
-      })
+      // .addCase(deleteOptionData.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(deleteOptionData.fulfilled, (state, action) => {
+      //   state.isLoading = false
+      //   if (action.payload.collectionName === 'contract') {
+      //     state.contract = action.payload.newArr
+      //     //配列を新しいのに置き換え
+      //   }
+      //   if (action.payload.collectionName === 'departments') {
+      //     state.departments = action.payload.newArr
+      //   }
+      //   if (action.payload.collectionName === 'positions') {
+      //     state.positions = action.payload.newArr
+      //   }
+      //   if (action.payload.collectionName === 'degree') {
+      //     state.degree = action.payload.newArr
+      //   }
+      // })
+      // .addCase(deleteOptionData.rejected, (state) => {
+      //   state.isLoading = false
+      // })
       //項目の編集
       .addCase(editOption.pending, (state) => {
         state.isLoading = true
@@ -246,6 +246,6 @@ export const optionsSlice = createSlice({
   },
 })
 
-export { deleteOptionData, editOption }
+export { editOption }
 
 export default optionsSlice.reducer

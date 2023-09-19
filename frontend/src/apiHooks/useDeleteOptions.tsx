@@ -1,19 +1,19 @@
-import { useQueryClient, useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { axiosInstance } from '../axios'
 import { getTokenInfo } from '../utils'
 
-export function useMutateOptions(queryKeyString: string) {
+export function useDeleteOptions(queryKeyString: string) {
   const queryClient = useQueryClient()
-  const updateFunc = async (newItem: string) => {
+  const deleteFunc = async (id: string) => {
     const { headers } = getTokenInfo()
     await axiosInstance
-      .post(`/${queryKeyString}/post`, { newItem }, { headers })
+      .delete(`/${queryKeyString}/delete`, { data: { id }, headers })
       .catch((err) => {
         console.log(err)
         return undefined
       })
   }
-  return useMutation(updateFunc, {
+  return useMutation(deleteFunc, {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKeyString])
     },
