@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../redux/hooks'
-import { editOption } from '../redux/slicers/optionsSlice'
 import { OptionBase } from '../redux/slicers/type'
 import { useAddOptions } from '../apiHooks/useAddOptions'
 import { useDeleteOptions } from '../apiHooks/useDeleteOptions'
+import { useEditOptions } from '../apiHooks/useEditOptions'
 
 export type collectionNameBase =
   | 'contract'
@@ -21,13 +20,13 @@ export const useSettingInputs = ({
   settingType,
   collectionName,
 }: SettingActions) => {
-  const dispatch = useAppDispatch()
   const [addInput, setAddInput] = useState<string>('')
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [editedName, setEditedName] = useState<string>('')
   const { mutate: addMutate, mutateAsync } = useAddOptions(collectionName)
   //非同期にしたい時はmutateAsyncを使う
   const { mutate: deleteMutate } = useDeleteOptions(collectionName)
+  const { mutate: editMutate } = useEditOptions(collectionName, editedName)
 
   //inputの値が変わった時
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,14 +59,7 @@ export const useSettingInputs = ({
 
   //保存を押した時
   const handleEditSubmit = (id: string | undefined) => {
-    if (typeof id !== 'undefined')
-      dispatch(
-        editOption({
-          id,
-          collectionName,
-          newName: editedName,
-        })
-      )
+    if (typeof id !== 'undefined') editMutate(id)
     setEditIndex(null)
   }
 

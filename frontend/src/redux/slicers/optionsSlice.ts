@@ -101,41 +101,41 @@ import { getTokenInfo } from '../../utils'
 // })
 
 //💡値を編集
-const editOption = createAsyncThunk(
-  'option/editOption',
-  async ({
-    id,
-    collectionName,
-    newName,
-  }: {
-    id: string
-    collectionName: collectionNameBase
-    newName: string
-  }) => {
-    const { headers } = getTokenInfo()
-    //サーバー通信
-    await axiosInstance
-      .put(`/${collectionName}/put`, { id, newName }, { headers })
-      .catch((err) => console.log(err))
+// const editOption = createAsyncThunk(
+//   'option/editOption',
+//   async ({
+//     id,
+//     collectionName,
+//     newName,
+//   }: {
+//     id: string
+//     collectionName: collectionNameBase
+//     newName: string
+//   }) => {
+//     const { headers } = getTokenInfo()
+//     //サーバー通信
+//     await axiosInstance
+//       .put(`/${collectionName}/put`, { id, newName }, { headers })
+//       .catch((err) => console.log(err))
 
-    //reduxの値を編集
-    //編集したところだけにfetchをかける
-    let updatedList: Array<OptionBase> = []
-    if (collectionName === 'contract') {
-      updatedList = await fetchContract()
-    }
-    if (collectionName === 'departments') {
-      updatedList = await fetchDepartments()
-    }
-    if (collectionName === 'positions') {
-      updatedList = await fetchPositions()
-    }
-    if (collectionName === 'degree') {
-      updatedList = await fetchdegree()
-    }
-    return { optionData: updatedList, collectionName: collectionName }
-  }
-)
+//     //reduxの値を編集
+//     //編集したところだけにfetchをかける
+//     let updatedList: Array<OptionBase> = []
+//     if (collectionName === 'contract') {
+//       updatedList = await fetchContract()
+//     }
+//     if (collectionName === 'departments') {
+//       updatedList = await fetchDepartments()
+//     }
+//     if (collectionName === 'positions') {
+//       updatedList = await fetchPositions()
+//     }
+//     if (collectionName === 'degree') {
+//       updatedList = await fetchdegree()
+//     }
+//     return { optionData: updatedList, collectionName: collectionName }
+//   }
+// )
 
 type OptionsState = {
   contract: Array<OptionBase>
@@ -160,92 +160,92 @@ export const optionsSlice = createSlice({
   reducers: {},
   //createAsyncThunkとセット。上でセットしたreturnが使える
   extraReducers: (builder) => {
-    builder
-      //項目の追加
-      // .addCase(addHrOptionData.pending, (state) => {
-      //   state.isLoading = true
-      // })
-      // .addCase(addHrOptionData.fulfilled, (state, action) => {
-      //   state.isLoading = false
-      //   if (action.payload.collectionName === 'contract') {
-      //     state.contract = action.payload.optionData
-      //     //配列を新しいのに置き換え
-      //   }
-      //   if (action.payload.collectionName === 'departments') {
-      //     state.departments = action.payload.optionData
-      //   }
-      //   if (action.payload.collectionName === 'positions') {
-      //     state.positions = action.payload.optionData
-      //   }
-      //   if (action.payload.collectionName === 'degree') {
-      //     state.degree = action.payload.optionData
-      //   }
-      // })
-      // .addCase(addHrOptionData.rejected, (state) => {
-      //   state.isLoading = false
-      // })
-      // //項目の取得
-      // .addCase(fetchHrOptionType.pending, (state) => {
-      //   state.isLoading = true
-      // })
-      // .addCase(fetchHrOptionType.fulfilled, (state, action) => {
-      //   state.isLoading = false
-      //   state.contract = action.payload.contractTypes
-      //   state.departments = action.payload.departmentTypes
-      //   state.positions = action.payload.positionTypes
-      //   state.degree = action.payload.degreeTypes
-      // })
-      // .addCase(fetchHrOptionType.rejected, (state) => {
-      //   state.isLoading = false
-      // })
-      //項目の削除
-      // .addCase(deleteOptionData.pending, (state) => {
-      //   state.isLoading = true
-      // })
-      // .addCase(deleteOptionData.fulfilled, (state, action) => {
-      //   state.isLoading = false
-      //   if (action.payload.collectionName === 'contract') {
-      //     state.contract = action.payload.newArr
-      //     //配列を新しいのに置き換え
-      //   }
-      //   if (action.payload.collectionName === 'departments') {
-      //     state.departments = action.payload.newArr
-      //   }
-      //   if (action.payload.collectionName === 'positions') {
-      //     state.positions = action.payload.newArr
-      //   }
-      //   if (action.payload.collectionName === 'degree') {
-      //     state.degree = action.payload.newArr
-      //   }
-      // })
-      // .addCase(deleteOptionData.rejected, (state) => {
-      //   state.isLoading = false
-      // })
-      //項目の編集
-      .addCase(editOption.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(editOption.fulfilled, (state, action) => {
-        state.isLoading = false
-        if (action.payload.collectionName === 'contract') {
-          state.contract = action.payload.optionData
-        }
-        if (action.payload.collectionName === 'departments') {
-          state.departments = action.payload.optionData
-        }
-        if (action.payload.collectionName === 'positions') {
-          state.positions = action.payload.optionData
-        }
-        if (action.payload.collectionName === 'degree') {
-          state.degree = action.payload.optionData
-        }
-      })
-      .addCase(editOption.rejected, (state) => {
-        state.isLoading = false
-      })
+    // builder
+    //項目の追加
+    // .addCase(addHrOptionData.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(addHrOptionData.fulfilled, (state, action) => {
+    //   state.isLoading = false
+    //   if (action.payload.collectionName === 'contract') {
+    //     state.contract = action.payload.optionData
+    //     //配列を新しいのに置き換え
+    //   }
+    //   if (action.payload.collectionName === 'departments') {
+    //     state.departments = action.payload.optionData
+    //   }
+    //   if (action.payload.collectionName === 'positions') {
+    //     state.positions = action.payload.optionData
+    //   }
+    //   if (action.payload.collectionName === 'degree') {
+    //     state.degree = action.payload.optionData
+    //   }
+    // })
+    // .addCase(addHrOptionData.rejected, (state) => {
+    //   state.isLoading = false
+    // })
+    // //項目の取得
+    // .addCase(fetchHrOptionType.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(fetchHrOptionType.fulfilled, (state, action) => {
+    //   state.isLoading = false
+    //   state.contract = action.payload.contractTypes
+    //   state.departments = action.payload.departmentTypes
+    //   state.positions = action.payload.positionTypes
+    //   state.degree = action.payload.degreeTypes
+    // })
+    // .addCase(fetchHrOptionType.rejected, (state) => {
+    //   state.isLoading = false
+    // })
+    //項目の削除
+    // .addCase(deleteOptionData.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(deleteOptionData.fulfilled, (state, action) => {
+    //   state.isLoading = false
+    //   if (action.payload.collectionName === 'contract') {
+    //     state.contract = action.payload.newArr
+    //     //配列を新しいのに置き換え
+    //   }
+    //   if (action.payload.collectionName === 'departments') {
+    //     state.departments = action.payload.newArr
+    //   }
+    //   if (action.payload.collectionName === 'positions') {
+    //     state.positions = action.payload.newArr
+    //   }
+    //   if (action.payload.collectionName === 'degree') {
+    //     state.degree = action.payload.newArr
+    //   }
+    // })
+    // .addCase(deleteOptionData.rejected, (state) => {
+    //   state.isLoading = false
+    // })
+    //項目の編集
+    // .addCase(editOption.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(editOption.fulfilled, (state, action) => {
+    //   state.isLoading = false
+    //   if (action.payload.collectionName === 'contract') {
+    //     state.contract = action.payload.optionData
+    //   }
+    //   if (action.payload.collectionName === 'departments') {
+    //     state.departments = action.payload.optionData
+    //   }
+    //   if (action.payload.collectionName === 'positions') {
+    //     state.positions = action.payload.optionData
+    //   }
+    //   if (action.payload.collectionName === 'degree') {
+    //     state.degree = action.payload.optionData
+    //   }
+    // })
+    // .addCase(editOption.rejected, (state) => {
+    //   state.isLoading = false
+    // })
   },
 })
 
-export { editOption }
+export {}
 
 export default optionsSlice.reducer
