@@ -25,7 +25,10 @@ function useQuerySearchedEmployeeData(
     return employeeArr
   }
 
-  return useQuery({ queryKey, queryFn, ...options })
+  return {
+    ...useQuery({ queryKey, queryFn, ...options }),
+    queryKey,
+  }
 }
 
 export default useQuerySearchedEmployeeData

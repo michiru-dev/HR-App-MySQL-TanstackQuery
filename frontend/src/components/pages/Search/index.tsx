@@ -18,22 +18,19 @@ function Search() {
 
   const dispatch = useAppDispatch()
 
-  // const { isLoading, data } = useQueryEmployeeData({
-  //   enabled: true,
-  // })
-
   //クエリパラメータ取得
   const [searchParams] = useSearchParams()
-  const searchedName = searchParams.get('searchedName') //ここの方は自動解決。stringを設定してもnullは消えない
+  const searchedName = searchParams.get('searchedName')
 
-  const { isLoading, data, refetch } = useQuerySearchedEmployeeData(
+  const { isLoading, data, refetch, queryKey } = useQuerySearchedEmployeeData(
     searchedName ?? '',
     {
-      enabled: false,
+      enabled: true,
+      //ここをfalseにするとuseMutationが効かなくなる。その場合はrefetchで対応
     }
   )
 
-  const { mutate: deleteMutate } = useDeleteEmployeeData()
+  const { mutate: deleteMutate } = useDeleteEmployeeData(queryKey)
 
   //検索インプットの値
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +54,6 @@ function Search() {
 
   //更新がかかった時
   useEffect(() => {
-    console.log(searchedName)
     if (searchedName === null) return
     refetch()
   }, [searchedName, refetch])
@@ -74,7 +70,6 @@ function Search() {
   ) => {
     if (typeof id === 'undefined' || searchedName === null) return
     await dispatch(editEmployeeData({ updatedEmployeeData, id }))
-    console.log('saved')
     refetch()
     // await dispatch(fetchSearchedEmployee(searchedName)) //編集して上書きしてきたデータを取得
     setEditEmployeeIndex(null)
@@ -88,9 +83,7 @@ function Search() {
   //削除ボタンが押された時
   const handleDeleteButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined' || searchedName === null) return
-    // await dispatch(deleteEmployeeData(docId))
     deleteMutate(docId)
-    // await dispatch(fetchSearchedEmployee(searchedName)) //古いデータを見た目からもなくす
     setEditEmployeeIndex(null)
   }
 
@@ -113,7 +106,6 @@ function Search() {
       </div>
       {searchedName !== null &&
         (isLoading === false && data?.length === 0 ? (
-          // isLoadingも条件に入れないとfoundemployeeがセットされるまでの時間にlengthが0になりnotfoundが表示されてしまう
           <EmployeeNotFound />
         ) : (
           <div className="employeeInfoListWrapper">

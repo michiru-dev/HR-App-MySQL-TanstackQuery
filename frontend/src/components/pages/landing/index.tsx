@@ -1,4 +1,3 @@
-import React from 'react'
 import { Search } from '../Search'
 import { LinkButton } from '../../common/UI/LinkButton'
 import Layout from '../../common/UI/Layout'
@@ -7,7 +6,6 @@ import LoadingSpinner from '../../common/UI/LoadingSpinner'
 
 function LandingPage() {
   const isLoading = useAppSelector((state) => state.employee.isLoading)
-  console.log('loaded')
   return (
     <>
       {isLoading && <LoadingSpinner />}

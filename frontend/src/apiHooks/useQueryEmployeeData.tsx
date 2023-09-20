@@ -23,5 +23,8 @@ export const useQueryEmployeeData = (
     return employeeArr
   }
 
-  return useQuery({ queryKey, queryFn, ...options })
+  return {
+    ...useQuery({ queryKey, queryFn, ...options }),
+    queryKey,
+  }
 }

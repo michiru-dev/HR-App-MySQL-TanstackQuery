@@ -15,11 +15,11 @@ function EmployeeList() {
     null
   )
 
-  const { isLoading, data, refetch } = useQueryEmployeeData({
+  const { isLoading, data, refetch, queryKey } = useQueryEmployeeData({
     enabled: true,
   })
 
-  const { mutate: deleteMutate } = useDeleteEmployeeData()
+  const { mutate: deleteMutate } = useDeleteEmployeeData(queryKey)
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {
