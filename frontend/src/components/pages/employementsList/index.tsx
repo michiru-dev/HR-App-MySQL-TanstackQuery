@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import {
-  deleteEmployeeData,
-  editEmployeeData,
-  // fetchEmployeeData,
-} from '../../../redux/slicers/employeeDataSlice'
+import { editEmployeeData } from '../../../redux/slicers/employeeDataSlice'
 import { useAppDispatch } from '../../../redux/hooks'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
@@ -11,6 +7,7 @@ import EmployeeInfoList, {
 import Layout from '../../common/UI/Layout'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
 import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
+import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
 
 function EmployeeList() {
   const dispatch = useAppDispatch()
@@ -21,6 +18,8 @@ function EmployeeList() {
   const { isLoading, data, refetch } = useQueryEmployeeData({
     enabled: true,
   })
+
+  const { mutate: deleteMutate } = useDeleteEmployeeData()
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {
@@ -47,9 +46,10 @@ function EmployeeList() {
   //削除ボタンが押された時
   const handleDeletButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined') return
-    await dispatch(deleteEmployeeData(docId))
+    // await dispatch(deleteEmployeeData(docId))
     // await dispatch(fetchEmployeeData()) //古いデータを見た目からもなくす
-    await refetch()
+    deleteMutate(docId)
+    // await refetch()
     setEditEmployeeIndex(null)
   }
 

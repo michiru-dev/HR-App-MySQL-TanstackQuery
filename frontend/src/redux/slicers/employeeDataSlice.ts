@@ -65,18 +65,18 @@ const fetchSearchedEmployee = createAsyncThunk(
   }
 )
 
-//💡削除（delete)
-const deleteEmployeeData = createAsyncThunk(
-  'employee/deleteEmployeeData',
-  async (id: string) => {
-    const { headers } = getTokenInfo()
-    await axiosInstance
-      .delete('/employees/delete', { data: { id }, headers })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-)
+// //💡削除（delete)
+// const deleteEmployeeData = createAsyncThunk(
+//   'employee/deleteEmployeeData',
+//   async (id: string) => {
+//     const { headers } = getTokenInfo()
+//     await axiosInstance
+//       .delete('/employees/delete', { data: { id }, headers })
+//       .catch((err) => {
+//         console.log(err)
+//       })
+//   }
+// )
 
 //💡編集(put)
 const editEmployeeData = createAsyncThunk<
@@ -156,16 +156,16 @@ export const employeeDataSlice = createSlice({
       .addCase(editEmployeeData.rejected, (state) => {
         state.isLoading = false
       })
-      //💡削除
-      .addCase(deleteEmployeeData.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(deleteEmployeeData.fulfilled, (state) => {
-        state.isLoading = false
-      })
-      .addCase(deleteEmployeeData.rejected, (state) => {
-        state.isLoading = false
-      })
+    // //💡削除
+    // .addCase(deleteEmployeeData.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(deleteEmployeeData.fulfilled, (state) => {
+    //   state.isLoading = false
+    // })
+    // .addCase(deleteEmployeeData.rejected, (state) => {
+    //   state.isLoading = false
+    // })
   },
 })
 
@@ -173,7 +173,7 @@ export {
   fetchSearchedEmployee,
   // fetchEmployeeData,
   editEmployeeData,
-  deleteEmployeeData,
+  // deleteEmployeeData,
 }
 
 export default employeeDataSlice.reducer

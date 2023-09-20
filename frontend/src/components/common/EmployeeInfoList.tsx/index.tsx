@@ -91,9 +91,6 @@ function EmployeeInfoList({
                 //propsで渡ってきたemployeeDataの配列にindexでアクセスする
               )
             }}
-            // const handleButtonClick2 = (registerInfo: EmployeeBase) =>
-            // handleButtonClick(registerInfo, employee.docId)
-            //handleButtonClickを実行する時にregisterInfoの引数が必要docIdはここで渡してるから不要
             handleCloseButton={handleCloseButton}
             handleDeleteButton={() =>
               handleDeleteButton(employeeData[editEmployeeIndex].employee_id)

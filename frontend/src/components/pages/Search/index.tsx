@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import {
-  deleteEmployeeData,
   editEmployeeData,
   fetchSearchedEmployee,
 } from '../../../redux/slicers/employeeDataSlice'
@@ -11,6 +10,8 @@ import EmployeeInfoList, {
 } from '../../common/EmployeeInfoList.tsx'
 import EmployeeNotFound from './EmployeeNotFound'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
+import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
 
 function Search() {
   const [searchInput, setSearchInput] = useState('')
@@ -20,8 +21,14 @@ function Search() {
   const foundEmployee = useAppSelector(
     (state) => state.employee.searchedEmployeeData
   )
-  const isLoading = useAppSelector((state) => state.employee.isLoading)
+  // const isLoading = useAppSelector((state) => state.employee.isLoading)
   const dispatch = useAppDispatch()
+
+  const { isLoading, data } = useQueryEmployeeData({
+    enabled: true,
+  })
+
+  const { mutate: deleteMutate } = useDeleteEmployeeData()
 
   //検索インプットの値
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,8 +85,9 @@ function Search() {
   //削除ボタンが押された時
   const handleDeleteButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined' || searchedName === null) return
-    await dispatch(deleteEmployeeData(docId))
-    await dispatch(fetchSearchedEmployee(searchedName)) //古いデータを見た目からもなくす
+    // await dispatch(deleteEmployeeData(docId))
+    deleteMutate(docId)
+    // await dispatch(fetchSearchedEmployee(searchedName)) //古いデータを見た目からもなくす
     setEditEmployeeIndex(null)
   }
 
@@ -107,7 +115,7 @@ function Search() {
         ) : (
           <div className="employeeInfoListWrapper">
             <EmployeeInfoList
-              employeeData={foundEmployee}
+              employeeData={data ?? []}
               handleEditClick={handleEditClick}
               handleSaveButtonClick={handleSaveButtonClick}
               handleCloseButton={handleCloseButton}
