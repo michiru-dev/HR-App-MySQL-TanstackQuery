@@ -5,18 +5,18 @@ import { AxiosResponse } from 'axios'
 import { getTokenInfo } from '../../utils'
 
 //💡追加(post)
-const addEmployeeData = createAsyncThunk(
-  'employee/addEmployeeData',
-  async (registerInfo: EmployeeWithoutId) => {
-    //awaitがあるからthenがなくても勝手にresolveした値を返してくれる
-    const { headers } = getTokenInfo()
-    await axiosInstance
-      .post(`/employees/post`, registerInfo, { headers })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-)
+// const addEmployeeData = createAsyncThunk(
+//   'employee/addEmployeeData',
+//   async (registerInfo: EmployeeWithoutId) => {
+//     //awaitがあるからthenがなくても勝手にresolveした値を返してくれる
+//     const { headers } = getTokenInfo()
+//     await axiosInstance
+//       .post(`/employees/post`, registerInfo, { headers })
+//       .catch((err) => {
+//         console.log(err)
+//       })
+//   }
+// )
 
 //日付が"YYYY-MM-DDTHH:mm:ss.sssZ"この形で返ってくるので
 //Tで区切ってその配列の一つ目[0]を返す
@@ -109,16 +109,16 @@ export const employeeDataSlice = createSlice({
   reducers: {}, //asyncを含むapi通信はreducersの中でやるべきではない
   extraReducers: (builder) => {
     builder
-      //💡保存
-      .addCase(addEmployeeData.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(addEmployeeData.fulfilled, (state) => {
-        state.isLoading = false
-      })
-      .addCase(addEmployeeData.rejected, (state) => {
-        state.isLoading = false
-      })
+      // //💡保存
+      // .addCase(addEmployeeData.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(addEmployeeData.fulfilled, (state) => {
+      //   state.isLoading = false
+      // })
+      // .addCase(addEmployeeData.rejected, (state) => {
+      //   state.isLoading = false
+      // })
       // //💡取得
       // .addCase(fetchEmployeeData.pending, (state) => {
       //   state.isLoading = true
@@ -174,7 +174,6 @@ export {
   // fetchEmployeeData,
   editEmployeeData,
   deleteEmployeeData,
-  addEmployeeData,
 }
 
 export default employeeDataSlice.reducer

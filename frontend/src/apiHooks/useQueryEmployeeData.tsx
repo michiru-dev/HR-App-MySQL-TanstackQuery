@@ -1,4 +1,4 @@
-import { useQuery, useMutation, UseQueryOptions } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { EmployeeBase } from '../redux/slicers/type'
 import { queryKeys } from '../const/queryKeys'
 import { getTokenInfo } from '../utils'
