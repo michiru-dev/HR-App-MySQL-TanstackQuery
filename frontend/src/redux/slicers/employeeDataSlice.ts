@@ -49,21 +49,21 @@ export const convertNumber = (res: AxiosResponse<EmployeeBase[]>) => {
 //   }
 // )
 
-//💡検索
-const fetchSearchedEmployee = createAsyncThunk(
-  'employee/fetchSearchedEmployee',
+// //💡検索
+// const fetchSearchedEmployee = createAsyncThunk(
+//   'employee/fetchSearchedEmployee',
 
-  async (searchKeyword: string) => {
-    const { headers } = getTokenInfo()
-    const searchedEmployeeArr = await axiosInstance
-      .get(`/employees/search?keyword=${searchKeyword}`, { headers })
-      .then((res) => convertNumber(res))
-      .catch((err) => {
-        console.log(err)
-      })
-    return { searchedEmployeeArr }
-  }
-)
+//   async (searchKeyword: string) => {
+//     const { headers } = getTokenInfo()
+//     const searchedEmployeeArr = await axiosInstance
+//       .get(`/employees/search?keyword=${searchKeyword}`, { headers })
+//       .then((res) => convertNumber(res))
+//       .catch((err) => {
+//         console.log(err)
+//       })
+//     return { searchedEmployeeArr }
+//   }
+// )
 
 // //💡削除（delete)
 // const deleteEmployeeData = createAsyncThunk(
@@ -108,54 +108,54 @@ export const employeeDataSlice = createSlice({
   initialState,
   reducers: {}, //asyncを含むapi通信はreducersの中でやるべきではない
   extraReducers: (builder) => {
-    builder
-      // //💡保存
-      // .addCase(addEmployeeData.pending, (state) => {
-      //   state.isLoading = true
-      // })
-      // .addCase(addEmployeeData.fulfilled, (state) => {
-      //   state.isLoading = false
-      // })
-      // .addCase(addEmployeeData.rejected, (state) => {
-      //   state.isLoading = false
-      // })
-      // //💡取得
-      // .addCase(fetchEmployeeData.pending, (state) => {
-      //   state.isLoading = true
-      // })
-      // .addCase(fetchEmployeeData.fulfilled, (state, action) => {
-      //   if (Array.isArray(action.payload.employeeArr)) {
-      //     // 返り値が配列であることをチェック
-      //     state.employeeData = action.payload.employeeArr
-      //   }
-      //   state.isLoading = false
-      // })
-      // .addCase(fetchEmployeeData.rejected, (state) => {
-      //   state.isLoading = false
-      // })
-      //💡検索値を探す
-      .addCase(fetchSearchedEmployee.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(fetchSearchedEmployee.fulfilled, (state, action) => {
-        if (Array.isArray(action.payload.searchedEmployeeArr)) {
-          state.searchedEmployeeData = action.payload.searchedEmployeeArr
-        }
-        state.isLoading = false
-      })
-      .addCase(fetchSearchedEmployee.rejected, (state) => {
-        state.isLoading = false
-      })
-      //💡編集
-      .addCase(editEmployeeData.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(editEmployeeData.fulfilled, (state) => {
-        state.isLoading = false
-      })
-      .addCase(editEmployeeData.rejected, (state) => {
-        state.isLoading = false
-      })
+    // builder
+    // //💡保存
+    // .addCase(addEmployeeData.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(addEmployeeData.fulfilled, (state) => {
+    //   state.isLoading = false
+    // })
+    // .addCase(addEmployeeData.rejected, (state) => {
+    //   state.isLoading = false
+    // })
+    // //💡取得
+    // .addCase(fetchEmployeeData.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(fetchEmployeeData.fulfilled, (state, action) => {
+    //   if (Array.isArray(action.payload.employeeArr)) {
+    //     // 返り値が配列であることをチェック
+    //     state.employeeData = action.payload.employeeArr
+    //   }
+    //   state.isLoading = false
+    // })
+    // .addCase(fetchEmployeeData.rejected, (state) => {
+    //   state.isLoading = false
+    // })
+    // //💡検索値を探す
+    // .addCase(fetchSearchedEmployee.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(fetchSearchedEmployee.fulfilled, (state, action) => {
+    //   if (Array.isArray(action.payload.searchedEmployeeArr)) {
+    //     state.searchedEmployeeData = action.payload.searchedEmployeeArr
+    //   }
+    //   state.isLoading = false
+    // })
+    // .addCase(fetchSearchedEmployee.rejected, (state) => {
+    //   state.isLoading = false
+    // })
+    // //💡編集
+    // .addCase(editEmployeeData.pending, (state) => {
+    //   state.isLoading = true
+    // })
+    // .addCase(editEmployeeData.fulfilled, (state) => {
+    //   state.isLoading = false
+    // })
+    // .addCase(editEmployeeData.rejected, (state) => {
+    //   state.isLoading = false
+    // })
     // //💡削除
     // .addCase(deleteEmployeeData.pending, (state) => {
     //   state.isLoading = true
@@ -170,7 +170,7 @@ export const employeeDataSlice = createSlice({
 })
 
 export {
-  fetchSearchedEmployee,
+  // fetchSearchedEmployee,
   // fetchEmployeeData,
   editEmployeeData,
   // deleteEmployeeData,

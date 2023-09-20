@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import {
-  editEmployeeData,
-  fetchSearchedEmployee,
-} from '../../../redux/slicers/employeeDataSlice'
+import { useAppDispatch } from '../../../redux/hooks'
+import { editEmployeeData } from '../../../redux/slicers/employeeDataSlice'
 import { Button } from '../../common/UI/Button'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
 } from '../../common/EmployeeInfoList.tsx'
 import EmployeeNotFound from './EmployeeNotFound'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
 import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
+import useQuerySearchedEmployeeData from '../../../apiHooks/useQuerySearchedEmployeeData'
 
 function Search() {
   const [searchInput, setSearchInput] = useState('')
   const [editEmployeeIndex, setEditEmployeeIndex] = useState<number | null>(
     null
   )
-  const foundEmployee = useAppSelector(
-    (state) => state.employee.searchedEmployeeData
-  )
-  // const isLoading = useAppSelector((state) => state.employee.isLoading)
+
   const dispatch = useAppDispatch()
 
-  const { isLoading, data } = useQueryEmployeeData({
-    enabled: true,
-  })
+  // const { isLoading, data } = useQueryEmployeeData({
+  //   enabled: true,
+  // })
+
+  //クエリパラメータ取得
+  const [searchParams] = useSearchParams()
+  const searchedName = searchParams.get('searchedName') //ここの方は自動解決。stringを設定してもnullは消えない
+
+  const { isLoading, data, refetch } = useQuerySearchedEmployeeData(
+    searchedName ?? '',
+    {
+      enabled: false,
+    }
+  )
 
   const { mutate: deleteMutate } = useDeleteEmployeeData()
 
@@ -37,28 +42,25 @@ function Search() {
 
   //クエリパラメーター作成
   const navigate = useNavigate()
-  const goToSearchResult = () =>
+  const goToSearchResult = (confirmedSearchInput: string) =>
     navigate({
       pathname: '/home',
-      search: `?searchedName=${searchInput}`,
+      search: `?searchedName=${confirmedSearchInput}`,
     })
-
-  //クエリパラメータ取得
-  const [searchParams] = useSearchParams()
-  const searchedName = searchParams.get('searchedName') //ここの方は自動解決。stringを設定してもnullは消えない
 
   //検索ボタンが押された時
   const handleSearchButtonClick = () => {
-    dispatch(fetchSearchedEmployee(searchInput))
+    const confirmedSearchInput = searchInput
+    goToSearchResult(confirmedSearchInput)
     setSearchInput('')
-    goToSearchResult()
   }
 
   //更新がかかった時
   useEffect(() => {
+    console.log(searchedName)
     if (searchedName === null) return
-    dispatch(fetchSearchedEmployee(searchedName))
-  }, [])
+    refetch()
+  }, [searchedName, refetch])
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {
@@ -72,8 +74,9 @@ function Search() {
   ) => {
     if (typeof id === 'undefined' || searchedName === null) return
     await dispatch(editEmployeeData({ updatedEmployeeData, id }))
-    await dispatch(fetchSearchedEmployee(searchedName)) //編集して上書きしてきたデータを取得
-    //ここの引数がなぜsetStateのsearchInputではないかというと、searchInputはすでに変更している可能性があるため
+    console.log('saved')
+    refetch()
+    // await dispatch(fetchSearchedEmployee(searchedName)) //編集して上書きしてきたデータを取得
     setEditEmployeeIndex(null)
   }
 
@@ -109,7 +112,7 @@ function Search() {
         <Button type="button" text={'検索'} onClick={handleSearchButtonClick} />
       </div>
       {searchedName !== null &&
-        (isLoading === false && foundEmployee.length === 0 ? (
+        (isLoading === false && data?.length === 0 ? (
           // isLoadingも条件に入れないとfoundemployeeがセットされるまでの時間にlengthが0になりnotfoundが表示されてしまう
           <EmployeeNotFound />
         ) : (
