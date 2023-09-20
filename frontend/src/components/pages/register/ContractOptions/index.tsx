@@ -1,7 +1,7 @@
-import React from 'react'
-import { useAppSelector } from '../../../../redux/hooks'
 import { ShowOptions } from '../ShowOptions'
-import { EmployeeWithoutId } from '../../../../redux/slicers/type'
+import { EmployeeWithoutId, OptionBase } from '../../../../redux/slicers/type'
+import { useQueryOptionsData } from '../../../../apiHooks/useQueryOptionsData'
+import { queryKeys } from '../../../../const/queryKeys'
 
 export function ContractOptions({
   onChange,
@@ -10,13 +10,15 @@ export function ContractOptions({
   onChange: React.Dispatch<React.SetStateAction<EmployeeWithoutId>>
   value: string | null
 }) {
-  const contract = useAppSelector((state) => state.option.contract)
+  const { contract } = queryKeys.options
+  const { data: contractData } = useQueryOptionsData<OptionBase[]>(contract)
+
   //reduxのcontractの配列を取得
   return (
     <ShowOptions
       labelName={'契約形態'}
       id={'contract_id'}
-      optionItem={contract}
+      optionItem={contractData}
       onChange={onChange}
       value={value}
     />

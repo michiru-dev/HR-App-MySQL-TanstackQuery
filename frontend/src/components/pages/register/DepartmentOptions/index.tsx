@@ -1,7 +1,7 @@
-import React from 'react'
-import { useAppSelector } from '../../../../redux/hooks'
 import { ShowOptions } from '../ShowOptions'
-import { EmployeeWithoutId } from '../../../../redux/slicers/type'
+import { EmployeeWithoutId, OptionBase } from '../../../../redux/slicers/type'
+import { queryKeys } from '../../../../const/queryKeys'
+import { useQueryOptionsData } from '../../../../apiHooks/useQueryOptionsData'
 
 export function DepartmentOptions({
   onChange,
@@ -10,12 +10,14 @@ export function DepartmentOptions({
   onChange: React.Dispatch<React.SetStateAction<EmployeeWithoutId>>
   value: string
 }) {
-  const department = useAppSelector((state) => state.option.departments)
+  const { departments } = queryKeys.options
+  const { data: departmentsData } =
+    useQueryOptionsData<OptionBase[]>(departments)
   return (
     <ShowOptions
       labelName={'部　　署'}
       id={'department_id'}
-      optionItem={department}
+      optionItem={departmentsData}
       onChange={onChange}
       value={value}
     />

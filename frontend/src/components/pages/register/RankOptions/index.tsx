@@ -1,7 +1,7 @@
-import React from 'react'
-import { useAppSelector } from '../../../../redux/hooks'
-import { EmployeeWithoutId } from '../../../../redux/slicers/type'
+import { EmployeeWithoutId, OptionBase } from '../../../../redux/slicers/type'
 import { ShowOptions } from '../ShowOptions'
+import { queryKeys } from '../../../../const/queryKeys'
+import { useQueryOptionsData } from '../../../../apiHooks/useQueryOptionsData'
 
 export function RankOptions({
   onChange,
@@ -10,12 +10,13 @@ export function RankOptions({
   onChange: React.Dispatch<React.SetStateAction<EmployeeWithoutId>>
   value: string
 }) {
-  const degree = useAppSelector((state) => state.option.degree)
+  const { degree } = queryKeys.options
+  const { data: degreeData } = useQueryOptionsData<OptionBase[]>(degree)
   return (
     <ShowOptions
       labelName={'等　　級'}
       id={'degree_id'}
-      optionItem={degree}
+      optionItem={degreeData}
       onChange={onChange}
       value={value}
     />
