@@ -7,4 +7,5 @@ export const queryKeys = {
     degree: 'degree',
   },
   searchEmployee: (searchKeyword: string) => ['searchEmployee', searchKeyword],
+  searchEmployeeAll: ['searchEmployee'],
 }

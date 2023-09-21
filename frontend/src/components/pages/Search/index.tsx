@@ -22,15 +22,14 @@ function Search() {
   const [searchParams] = useSearchParams()
   const searchedName = searchParams.get('searchedName')
 
-  const { isLoading, data, refetch, queryKey } = useQuerySearchedEmployeeData(
+  const { isLoading, data, refetch } = useQuerySearchedEmployeeData(
     searchedName ?? '',
     {
-      enabled: true,
-      //ここをfalseにするとuseMutationが効かなくなる。その場合はrefetchで対応
+      enabled: false, //レンダリング時の実行をしない
     }
   )
 
-  const { mutate: deleteMutate } = useDeleteEmployeeData(queryKey)
+  const { mutateAsync: deleteMutate } = useDeleteEmployeeData()
 
   //検索インプットの値
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +82,9 @@ function Search() {
   //削除ボタンが押された時
   const handleDeleteButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined' || searchedName === null) return
-    deleteMutate(docId)
+    console.log('1')
+    await deleteMutate(docId)
+    refetch()
     setEditEmployeeIndex(null)
   }
 

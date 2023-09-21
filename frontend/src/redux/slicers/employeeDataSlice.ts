@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { EmployeeBase, EmployeeWithoutId } from './type'
+import { EmployeeBase } from './type'
 import { axiosInstance } from '../../axios'
 import { AxiosResponse } from 'axios'
 import { getTokenInfo } from '../../utils'

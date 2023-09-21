@@ -8,9 +8,11 @@ import Layout from '../../common/UI/Layout'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
 import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
 import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
+import { useQueryClient } from '@tanstack/react-query'
 
 function EmployeeList() {
   const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
   const [editEmployeeIndex, setEditEmployeeIndex] = useState<number | null>(
     null
   )
@@ -19,7 +21,11 @@ function EmployeeList() {
     enabled: true,
   })
 
-  const { mutate: deleteMutate } = useDeleteEmployeeData(queryKey)
+  const { mutate: deleteMutate } = useDeleteEmployeeData({
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey)
+    },
+  })
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {

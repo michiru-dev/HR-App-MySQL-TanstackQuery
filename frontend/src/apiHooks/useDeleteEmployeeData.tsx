@@ -1,9 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { UseMutationOptions, useMutation } from '@tanstack/react-query'
 import { axiosInstance } from '../axios'
 import { getTokenInfo } from '../utils'
 
-function useDeleteEmployeeData(queryKey: any) {
-  const queryClient = useQueryClient()
+type DeleteEmployeeDataOptions = UseMutationOptions<void, unknown, string>
+
+function useDeleteEmployeeData(options?: DeleteEmployeeDataOptions) {
   const deleteFunc = async (id: string) => {
     const { headers } = getTokenInfo()
     await axiosInstance
@@ -14,11 +15,7 @@ function useDeleteEmployeeData(queryKey: any) {
       })
   }
 
-  return useMutation(deleteFunc, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(queryKey)
-    },
-  })
+  return useMutation(deleteFunc, options)
 }
 
 export default useDeleteEmployeeData

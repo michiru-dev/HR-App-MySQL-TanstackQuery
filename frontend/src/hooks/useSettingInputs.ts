@@ -25,6 +25,13 @@ export const useSettingInputs = ({
   const [editedName, setEditedName] = useState<string>('')
   const { mutate: addMutate, mutateAsync } = useAddOptions(collectionName)
   //非同期にしたい時はmutateAsyncを使う
+  //関数の中でfetchをしてるから、デフォルトで非同期じゃないの？と思うが、
+  //そのfetchの関数をuseMutationでラップしてるからシンプルな同期処理になってる
+  //そのためmutateAsyncを使う
+  //ただ、そもそも同期処理ならなぜ非同期にしてasycawaitで同期に戻すの？と思うが
+  //シンプルな同期処理は処理を順番に行うだけで、fetchの結果を待つことはしないから
+  //asyncawaitで同期ぽくした「同期ぽい関数」はfetchの結果を待ってから処理が進む
+  //なのでシンプルな同期処理と非同期処理をasyncawaitで同期ぽくした処理は厳密には別物！
   const { mutate: deleteMutate } = useDeleteOptions(collectionName)
   const { mutate: editMutate } = useEditOptions(collectionName, editedName)
 
