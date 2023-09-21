@@ -22,12 +22,15 @@ function Setting() {
   const { data: positonsData, isLoading: isPositonsLoading } =
     useQueryOptionsData<OptionBase[]>(positions)
 
+  const isLoading =
+    isContractLoading ||
+    isDepartmentsLoading ||
+    isPositonsLoading ||
+    isDegreeLoading
+
   return (
     <>
-      {isContractLoading ||
-        isDepartmentsLoading ||
-        isPositonsLoading ||
-        (isDegreeLoading && <LoadingSpinner />)}
+      {isLoading && <LoadingSpinner />}
       <Layout>
         <div className="settingBox">
           <Tabs>
