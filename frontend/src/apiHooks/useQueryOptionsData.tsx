@@ -4,10 +4,10 @@ import { getTokenInfo } from '../utils'
 import { OptionBase } from '../types/type'
 
 export function useQueryOptionsData<T extends OptionBase[]>(
-  queryKeyString: string,
+  queryKeyString: string[],
   options?: UseQueryOptions<unknown, unknown, undefined | T>
 ) {
-  const queryKey = [queryKeyString]
+  const queryKey = queryKeyString
   const queryFn = async () => {
     const { headers } = getTokenInfo()
     return await axiosInstance

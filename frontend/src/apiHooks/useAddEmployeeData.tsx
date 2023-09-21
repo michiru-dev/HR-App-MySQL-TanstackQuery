@@ -6,7 +6,7 @@ import { EmployeeWithoutId } from '../types/type'
 
 function useAddEmployeeData() {
   const queryClient = useQueryClient()
-  const queryKey = [queryKeys.employee.all]
+  const queryKey = queryKeys.employee.all
   const updateFunc = async (registerInfo: EmployeeWithoutId) => {
     const { headers } = getTokenInfo()
     await axiosInstance
