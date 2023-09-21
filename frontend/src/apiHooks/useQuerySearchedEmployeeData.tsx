@@ -1,9 +1,8 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query'
-import { getTokenInfo } from '../utils'
+import { convertNumber, getTokenInfo } from '../utils'
 import { axiosInstance } from '../axios'
-import { convertNumber } from '../redux/slicers/employeeDataSlice'
 import { queryKeys } from '../const/queryKeys'
-import { EmployeeBase } from '../redux/slicers/type'
+import { EmployeeBase } from '../types/type'
 
 function useQuerySearchedEmployeeData(
   searchKeyword: string,

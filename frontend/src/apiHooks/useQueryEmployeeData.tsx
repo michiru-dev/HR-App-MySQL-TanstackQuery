@@ -1,9 +1,8 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { EmployeeBase } from '../redux/slicers/type'
 import { queryKeys } from '../const/queryKeys'
-import { getTokenInfo } from '../utils'
+import { convertNumber, getTokenInfo } from '../utils'
 import { axiosInstance } from '../axios'
-import { convertNumber } from '../redux/slicers/employeeDataSlice'
+import { EmployeeBase } from '../types/type'
 
 export const useQueryEmployeeData = (
   options?: UseQueryOptions<unknown, unknown, undefined | EmployeeBase[]>

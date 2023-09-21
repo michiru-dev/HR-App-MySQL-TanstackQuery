@@ -1,7 +1,7 @@
 import React from 'react'
 import { EmployeeInfoEditModal } from '../../pages/employementsList/EmployeeInfoEditModal'
 import { Button } from '../UI/Button'
-import { EmployeeBase, EmployeeWithoutId } from '../../../redux/slicers/type'
+import { EmployeeBase, EmployeeWithoutId } from '../../../types/type'
 
 export type HandleSaveButtonClick = (
   registerInfo: EmployeeWithoutId,

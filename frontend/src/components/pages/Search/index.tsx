@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch } from '../../../redux/hooks'
-import { editEmployeeData } from '../../../redux/slicers/employeeDataSlice'
 import { Button } from '../../common/UI/Button'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
@@ -9,6 +7,7 @@ import EmployeeNotFound from './EmployeeNotFound'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
 import useQuerySearchedEmployeeData from '../../../apiHooks/useQuerySearchedEmployeeData'
+import useEditEmployeeData from '../../../apiHooks/useEditEmployeeData'
 
 function Search() {
   const [searchInput, setSearchInput] = useState('')
@@ -16,12 +15,11 @@ function Search() {
     null
   )
 
-  const dispatch = useAppDispatch()
-
   //クエリパラメータ取得
   const [searchParams] = useSearchParams()
   const searchedName = searchParams.get('searchedName')
 
+  //検索結果
   const { isLoading, data, refetch } = useQuerySearchedEmployeeData(
     searchedName ?? '',
     {
@@ -29,7 +27,15 @@ function Search() {
     }
   )
 
+  //⚠️useQuerySearchedEmployeeDataでenabled falseにしているため
+  //この下の削除や編集のuseMutationの中にonSuccessを渡しても動かない
+  //そのため手動でrefetchする
+
+  //削除 useMutation
   const { mutateAsync: deleteMutate } = useDeleteEmployeeData()
+
+  //編集 useMutation
+  const { mutateAsync: editMutate } = useEditEmployeeData()
 
   //検索インプットの値
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,9 +74,8 @@ function Search() {
     id
   ) => {
     if (typeof id === 'undefined' || searchedName === null) return
-    await dispatch(editEmployeeData({ updatedEmployeeData, id }))
+    await editMutate({ updatedEmployeeData, id })
     refetch()
-    // await dispatch(fetchSearchedEmployee(searchedName)) //編集して上書きしてきたデータを取得
     setEditEmployeeIndex(null)
   }
 
@@ -82,7 +87,6 @@ function Search() {
   //削除ボタンが押された時
   const handleDeleteButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined' || searchedName === null) return
-    console.log('1')
     await deleteMutate(docId)
     refetch()
     setEditEmployeeIndex(null)

@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { OptionBase } from '../redux/slicers/type'
-import { useAddOptions } from '../apiHooks/useAddOptions'
+import { useAddOptions } from '../apiHooks/useMutateOptions'
 import { useDeleteOptions } from '../apiHooks/useDeleteOptions'
 import { useEditOptions } from '../apiHooks/useEditOptions'
+import { OptionBase } from '../types/type'
 
 export type collectionNameBase =
   | 'contract'
@@ -23,6 +23,7 @@ export const useSettingInputs = ({
   const [addInput, setAddInput] = useState<string>('')
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [editedName, setEditedName] = useState<string>('')
+
   const { mutate: addMutate, mutateAsync } = useAddOptions(collectionName)
   //非同期にしたい時はmutateAsyncを使う
   //関数の中でfetchをしてるから、デフォルトで非同期じゃないの？と思うが、

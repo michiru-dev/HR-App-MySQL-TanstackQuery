@@ -4,8 +4,8 @@ import Layout from '../../common/UI/Layout'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
 import { useQueryOptionsData } from '../../../apiHooks/useQueryOptionsData'
 import { queryKeys } from '../../../const/queryKeys'
-import { OptionBase } from '../../../redux/slicers/type'
 import { ShowSettingList } from './ShowSettingList'
+import { OptionBase } from '../../../types/type'
 
 function Setting() {
   const { contract, departments, positions, degree } = queryKeys.options

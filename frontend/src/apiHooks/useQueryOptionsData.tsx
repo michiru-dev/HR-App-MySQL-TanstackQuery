@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query'
 import { axiosInstance } from '../axios'
 import { getTokenInfo } from '../utils'
-import { OptionBase } from '../redux/slicers/type'
+import { OptionBase } from '../types/type'
 
 export function useQueryOptionsData<T extends OptionBase[]>(
   queryKeyString: string,

@@ -1,10 +1,10 @@
 import { useSettingInputs } from '../../../../hooks/useSettingInputs'
 import { SettingActions } from '../../../../hooks/useSettingInputs'
 import { Button } from '../../../common/UI/Button'
-import { OptionBase } from '../../../../redux/slicers/type'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import { OptionBase } from '../../../../types/type'
 
 //各種設定の画面
 //１個目の...restは残りをrestという変数に入れてる

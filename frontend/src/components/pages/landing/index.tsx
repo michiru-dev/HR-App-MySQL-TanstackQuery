@@ -1,11 +1,11 @@
 import { Search } from '../Search'
 import { LinkButton } from '../../common/UI/LinkButton'
 import Layout from '../../common/UI/Layout'
-import { useAppSelector } from '../../../redux/hooks'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
+import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
 
 function LandingPage() {
-  const isLoading = useAppSelector((state) => state.employee.isLoading)
+  const { isLoading } = useQueryEmployeeData()
   return (
     <>
       {isLoading && <LoadingSpinner />}

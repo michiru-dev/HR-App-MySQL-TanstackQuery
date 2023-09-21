@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { editEmployeeData } from '../../../redux/slicers/employeeDataSlice'
-import { useAppDispatch } from '../../../redux/hooks'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
 } from '../../common/EmployeeInfoList.tsx'
@@ -9,19 +7,27 @@ import LoadingSpinner from '../../common/UI/LoadingSpinner'
 import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
 import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
 import { useQueryClient } from '@tanstack/react-query'
+import useEditEmployeeData from '../../../apiHooks/useEditEmployeeData'
 
 function EmployeeList() {
-  const dispatch = useAppDispatch()
   const queryClient = useQueryClient()
   const [editEmployeeIndex, setEditEmployeeIndex] = useState<number | null>(
     null
   )
 
-  const { isLoading, data, refetch, queryKey } = useQueryEmployeeData({
+  //社員一覧
+  const { isLoading, data, queryKey } = useQueryEmployeeData({
     enabled: true,
   })
 
+  //削除
   const { mutate: deleteMutate } = useDeleteEmployeeData({
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey)
+    },
+  })
+
+  const { mutate: editMutate } = useEditEmployeeData({
     onSuccess: () => {
       queryClient.invalidateQueries(queryKey)
     },
@@ -38,9 +44,7 @@ function EmployeeList() {
     id
   ) => {
     if (typeof id === 'undefined') return
-    await dispatch(editEmployeeData({ updatedEmployeeData, id }))
-    // await dispatch(fetchEmployeeData()) //編集して上書きしてきたデータを取得
-    await refetch()
+    editMutate({ updatedEmployeeData, id })
     setEditEmployeeIndex(null)
   }
 
@@ -52,10 +56,7 @@ function EmployeeList() {
   //削除ボタンが押された時
   const handleDeletButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined') return
-    // await dispatch(deleteEmployeeData(docId))
-    // await dispatch(fetchEmployeeData()) //古いデータを見た目からもなくす
     deleteMutate(docId)
-    // await refetch()
     setEditEmployeeIndex(null)
   }
 

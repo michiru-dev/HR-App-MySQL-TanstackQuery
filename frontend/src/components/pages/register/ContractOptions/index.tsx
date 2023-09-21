@@ -1,7 +1,7 @@
 import { ShowOptions } from '../ShowOptions'
-import { EmployeeWithoutId, OptionBase } from '../../../../redux/slicers/type'
 import { useQueryOptionsData } from '../../../../apiHooks/useQueryOptionsData'
 import { queryKeys } from '../../../../const/queryKeys'
+import { EmployeeWithoutId, OptionBase } from '../../../../types/type'
 
 export function ContractOptions({
   onChange,

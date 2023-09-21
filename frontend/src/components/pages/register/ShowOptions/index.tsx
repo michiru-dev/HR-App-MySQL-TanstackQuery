@@ -1,5 +1,4 @@
-import React from 'react'
-import { EmployeeWithoutId, OptionBase } from '../../../../redux/slicers/type'
+import { EmployeeWithoutId, OptionBase } from '../../../../types/type'
 
 type ShowOptionsType = {
   labelName: string

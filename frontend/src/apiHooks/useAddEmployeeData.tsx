@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { axiosInstance } from '../axios'
 import { getTokenInfo } from '../utils'
-import { EmployeeWithoutId } from '../redux/slicers/type'
 import { queryKeys } from '../const/queryKeys'
+import { EmployeeWithoutId } from '../types/type'
 
 function useAddEmployeeData() {
   const queryClient = useQueryClient()

@@ -1,7 +1,7 @@
 import { EmployeeInfoRegister } from '../../common/EmployeeInforRegister'
-import { EmployeeWithoutId } from '../../../redux/slicers/type'
 import Layout from '../../common/UI/Layout'
 import useAddEmployeeData from '../../../apiHooks/useAddEmployeeData'
+import { EmployeeWithoutId } from '../../../types/type'
 
 function Register() {
   const { mutate } = useAddEmployeeData()
