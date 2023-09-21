@@ -1,7 +1,7 @@
-# HR App 　人事管理アプリ ／TanStack Query✍️
+# HR App 　人事管理アプリ ／MySQL／Tanstack Query✍️
 
-社員情報を登録、閲覧、検索、編集できるアプリです。
-Redux の代わりに TanStackQuery ver.
+社員情報を登録、閲覧、検索、編集できるアプリです。  
+※Reduxの代わりにTanstack Queryを使い書き換えたバージョン
 
 #### フロントエンド
 
