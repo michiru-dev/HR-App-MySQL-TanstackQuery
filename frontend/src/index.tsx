@@ -11,17 +11,28 @@ import '../src/components/pages/register/register.scss'
 import '../src/components/pages/setting/setting.scss'
 import '../src/components/pages/employementsList/employementsList.scss'
 import '../src/components/pages/login/login.scss'
-
 import App from './App'
-import { Provider } from 'react-redux'
-import store from '../src/redux/store'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactNode } from 'react'
+
+const queryClient = new QueryClient()
+
+function TanstackProvider({ children }: { children: ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <TanstackProvider>
       {/* storeとアプリ自体を繋ぐ役目。囲ったやつでstoreにアクセスできるようになる */}
       <App />
-    </Provider>
+    </TanstackProvider>
   </React.StrictMode>
 )

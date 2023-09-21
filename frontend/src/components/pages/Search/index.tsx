@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import {
-  deleteEmployeeData,
-  editEmployeeData,
-  fetchSearchedEmployee,
-} from '../../../redux/slicers/employeeDataSlice'
 import { Button } from '../../common/UI/Button'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
 } from '../../common/EmployeeInfoList.tsx'
 import EmployeeNotFound from './EmployeeNotFound'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
+import useQuerySearchedEmployeeData from '../../../apiHooks/useQuerySearchedEmployeeData'
+import useEditEmployeeData from '../../../apiHooks/useEditEmployeeData'
 
 function Search() {
   const [searchInput, setSearchInput] = useState('')
   const [editEmployeeIndex, setEditEmployeeIndex] = useState<number | null>(
     null
   )
-  const foundEmployee = useAppSelector(
-    (state) => state.employee.searchedEmployeeData
+
+  //クエリパラメータ取得
+  const [searchParams] = useSearchParams()
+  const searchedName = searchParams.get('searchedName')
+
+  //検索結果
+  const { isLoading, data, refetch } = useQuerySearchedEmployeeData(
+    searchedName ?? '',
+    {
+      enabled: false, //レンダリング時の実行をしない
+    }
   )
-  const isLoading = useAppSelector((state) => state.employee.isLoading)
-  const dispatch = useAppDispatch()
+
+  //⚠️useQuerySearchedEmployeeDataでenabled falseにしているため
+  //この下の削除や編集のuseMutationの中にonSuccessを渡しても動かない
+  //そのため手動でrefetchする
+
+  //削除 useMutation
+  const { mutateAsync: deleteMutate } = useDeleteEmployeeData()
+
+  //編集 useMutation
+  const { mutateAsync: editMutate } = useEditEmployeeData()
 
   //検索インプットの値
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,28 +44,24 @@ function Search() {
 
   //クエリパラメーター作成
   const navigate = useNavigate()
-  const goToSearchResult = () =>
+  const goToSearchResult = (confirmedSearchInput: string) =>
     navigate({
       pathname: '/home',
-      search: `?searchedName=${searchInput}`,
+      search: `?searchedName=${confirmedSearchInput}`,
     })
-
-  //クエリパラメータ取得
-  const [searchParams] = useSearchParams()
-  const searchedName = searchParams.get('searchedName') //ここの方は自動解決。stringを設定してもnullは消えない
 
   //検索ボタンが押された時
   const handleSearchButtonClick = () => {
-    dispatch(fetchSearchedEmployee(searchInput))
+    const confirmedSearchInput = searchInput
+    goToSearchResult(confirmedSearchInput)
     setSearchInput('')
-    goToSearchResult()
   }
 
   //更新がかかった時
   useEffect(() => {
     if (searchedName === null) return
-    dispatch(fetchSearchedEmployee(searchedName))
-  }, [])
+    refetch()
+  }, [searchedName, refetch])
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {
@@ -64,9 +74,8 @@ function Search() {
     id
   ) => {
     if (typeof id === 'undefined' || searchedName === null) return
-    await dispatch(editEmployeeData({ updatedEmployeeData, id }))
-    await dispatch(fetchSearchedEmployee(searchedName)) //編集して上書きしてきたデータを取得
-    //ここの引数がなぜsetStateのsearchInputではないかというと、searchInputはすでに変更している可能性があるため
+    await editMutate({ updatedEmployeeData, id })
+    refetch()
     setEditEmployeeIndex(null)
   }
 
@@ -78,8 +87,8 @@ function Search() {
   //削除ボタンが押された時
   const handleDeleteButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined' || searchedName === null) return
-    await dispatch(deleteEmployeeData(docId))
-    await dispatch(fetchSearchedEmployee(searchedName)) //古いデータを見た目からもなくす
+    await deleteMutate(docId)
+    refetch()
     setEditEmployeeIndex(null)
   }
 
@@ -101,13 +110,12 @@ function Search() {
         <Button type="button" text={'検索'} onClick={handleSearchButtonClick} />
       </div>
       {searchedName !== null &&
-        (isLoading === false && foundEmployee.length === 0 ? (
-          // isLoadingも条件に入れないとfoundemployeeがセットされるまでの時間にlengthが0になりnotfoundが表示されてしまう
+        (isLoading === false && data?.length === 0 ? (
           <EmployeeNotFound />
         ) : (
           <div className="employeeInfoListWrapper">
             <EmployeeInfoList
-              employeeData={foundEmployee}
+              employeeData={data ?? []}
               handleEditClick={handleEditClick}
               handleSaveButtonClick={handleSaveButtonClick}
               handleCloseButton={handleCloseButton}

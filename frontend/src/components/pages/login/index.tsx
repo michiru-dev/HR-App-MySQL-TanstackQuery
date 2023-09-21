@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { axiosInstance } from '../../../axios'
 import { Button } from '../../common/UI/Button'
 import { useNavigate } from 'react-router-dom'
@@ -10,11 +10,11 @@ export function Login() {
   const [isInfoCorrect, setIsInfoCorrect] = useState(true)
   const navigate = useNavigate()
 
-  const handleChangeId = (e: any) => {
+  const handleChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser_id(e.target.value)
   }
 
-  const handleChangePassword = (e: any) => {
+  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
   }
 

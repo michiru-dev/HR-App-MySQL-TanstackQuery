@@ -1,10 +1,9 @@
-import React from 'react'
-import { EmployeeWithoutId, OptionBase } from '../../../../redux/slicers/type'
+import { EmployeeWithoutId, OptionBase } from '../../../../types/type'
 
 type ShowOptionsType = {
   labelName: string
   id: string
-  optionItem: OptionBase[]
+  optionItem: OptionBase[] | undefined
   onChange: React.Dispatch<React.SetStateAction<EmployeeWithoutId>>
   value: string | null
 }
@@ -34,7 +33,7 @@ export function ShowOptions({
         className="registerSelectOptionInput"
       >
         <option value=""></option>
-        {optionItem.map((option: OptionBase) => {
+        {optionItem?.map((option: OptionBase) => {
           return (
             <option key={option.id} value={option.id}>
               {option.name}

@@ -1,13 +1,13 @@
-import React from 'react'
 import { useSettingInputs } from '../../../../hooks/useSettingInputs'
 import { SettingActions } from '../../../../hooks/useSettingInputs'
 import { Button } from '../../../common/UI/Button'
-import { OptionBase } from '../../../../redux/slicers/type'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons'
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import { OptionBase } from '../../../../types/type'
 
 //各種設定の画面
+//１個目の...restは残りをrestという変数に入れてる
 export function ShowSettingList({ settingType, ...rest }: SettingActions) {
   const {
     addInput,
@@ -19,11 +19,11 @@ export function ShowSettingList({ settingType, ...rest }: SettingActions) {
     handleEditClick,
     handleEditInputChange,
     handleEditSubmit,
-  } = useSettingInputs({ settingType, ...rest })
+  } = useSettingInputs({ settingType, ...rest }) //ここの...restは展開。上とは違う
 
   return (
     <div>
-      {settingType.map((setting: OptionBase, index: number) => {
+      {settingType?.map((setting: OptionBase, index: number) => {
         return (
           <li key={setting.id} className="settingItem">
             {editIndex === index ? (

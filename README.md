@@ -1,15 +1,16 @@
 # HR App 　人事管理アプリ ／MySQL／Tanstack Query✍️
 
 社員情報を登録、閲覧、検索、編集できるアプリです。  
-※Tanstack Queryを使い書き換えたバージョン
+※Reduxの代わりにTanstack Queryを使い書き換えたバージョン
 
 #### フロントエンド
 
 - React.js 18.2
 - React-router-dom 6.10
-- Redux-toolkit 1.9.5
+- ~~Redux-toolkit 1.9.5~~
 - Typescript 4.9.5
 - Scss(Sass) 1.62.1
+- TanStack Query 4.35.3
 
 #### バックエンド
 
@@ -26,10 +27,9 @@
 個人情報テストデータジェネレーター([https://testdata.userlocal.jp/](https://testdata.userlocal.jp/))  
 ※既存の個人データはダミーです。上記 URL にて生成しています。
 
-#### ER図
+#### ER 図
+
 ![user_id (1)](https://github.com/michiru-dev/HR-App-MySQL/assets/105535906/adf2074f-cd18-4bf5-842f-f292094745bd)
-
-
 
 ##### 🌱 社員検索
 

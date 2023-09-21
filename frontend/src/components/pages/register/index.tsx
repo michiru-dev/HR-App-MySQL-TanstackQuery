@@ -1,16 +1,14 @@
-import React from 'react'
-import { useAppDispatch } from '../../../redux/hooks'
-import { addEmployeeData } from '../../../redux/slicers/employeeDataSlice'
 import { EmployeeInfoRegister } from '../../common/EmployeeInforRegister'
-import { EmployeeWithoutId } from '../../../redux/slicers/type'
 import Layout from '../../common/UI/Layout'
+import useAddEmployeeData from '../../../apiHooks/useAddEmployeeData'
+import { EmployeeWithoutId } from '../../../types/type'
 
 function Register() {
-  const dispatch = useAppDispatch()
+  const { mutate } = useAddEmployeeData()
 
   const handleRegister = (registerInfo: EmployeeWithoutId) => {
     alert('登録されました')
-    dispatch(addEmployeeData(registerInfo))
+    mutate(registerInfo)
   }
 
   return (

@@ -6,7 +6,7 @@ import { PositionOptions } from '../../pages/register/PositionOptions'
 import { RankOptions } from '../../pages/register/RankOptions'
 import { Button } from '../UI/Button'
 import RegisterInput from './RegisterInput'
-import { EmployeeBase, EmployeeWithoutId } from '../../../redux/slicers/type'
+import { EmployeeBase, EmployeeWithoutId } from '../../../types/type'
 
 export type EmployeeInfoBase = {
   buttonText: string

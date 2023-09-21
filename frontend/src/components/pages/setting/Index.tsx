@@ -1,26 +1,33 @@
-import React, { useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
-import { ContractSetting } from './ContractSetting'
-import { DepartmentSetting } from './DepartmentSetting'
-import { PositionsSetting } from './PositionSetting'
-import { RankSetting } from './RankSetting'
 import Layout from '../../common/UI/Layout'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
-import { fetchHrOptionType } from '../../../redux/slicers/optionsSlice'
+import { useQueryOptionsData } from '../../../apiHooks/useQueryOptionsData'
+import { queryKeys } from '../../../const/queryKeys'
+import { ShowSettingList } from './ShowSettingList'
+import { OptionBase } from '../../../types/type'
 
 function Setting() {
-  const isLoading = useAppSelector((state) => state.option.isLoading)
+  const { contract, departments, positions, degree } = queryKeys.options
 
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(fetchHrOptionType())
-  }, [dispatch])
+  const { data: contractData, isLoading: isContractLoading } =
+    useQueryOptionsData<OptionBase[]>(contract)
+
+  const { data: depatmentstData, isLoading: isDepartmentsLoading } =
+    useQueryOptionsData<OptionBase[]>(departments)
+
+  const { data: degreetData, isLoading: isDegreeLoading } =
+    useQueryOptionsData<OptionBase[]>(degree)
+
+  const { data: positonsData, isLoading: isPositonsLoading } =
+    useQueryOptionsData<OptionBase[]>(positions)
 
   return (
     <>
-      {isLoading && <LoadingSpinner />}
+      {isContractLoading ||
+        isDepartmentsLoading ||
+        isPositonsLoading ||
+        (isDegreeLoading && <LoadingSpinner />)}
       <Layout>
         <div className="settingBox">
           <Tabs>
@@ -32,16 +39,28 @@ function Setting() {
             </TabList>
 
             <TabPanel>
-              <ContractSetting />
+              <ShowSettingList
+                settingType={contractData}
+                collectionName={'contract'}
+              />
             </TabPanel>
             <TabPanel>
-              <DepartmentSetting />
+              <ShowSettingList
+                settingType={depatmentstData}
+                collectionName={'departments'}
+              />
             </TabPanel>
             <TabPanel>
-              <RankSetting />
+              <ShowSettingList
+                settingType={degreetData}
+                collectionName={'degree'}
+              />
             </TabPanel>
             <TabPanel>
-              <PositionsSetting />
+              <ShowSettingList
+                settingType={positonsData}
+                collectionName={'positions'}
+              />
             </TabPanel>
           </Tabs>
         </div>

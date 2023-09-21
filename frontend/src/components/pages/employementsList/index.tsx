@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import {
-  deleteEmployeeData,
-  editEmployeeData,
-  fetchEmployeeData,
-} from '../../../redux/slicers/employeeDataSlice'
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { useState } from 'react'
 import EmployeeInfoList, {
   HandleSaveButtonClick,
 } from '../../common/EmployeeInfoList.tsx'
 import Layout from '../../common/UI/Layout'
 import LoadingSpinner from '../../common/UI/LoadingSpinner'
+import { useQueryEmployeeData } from '../../../apiHooks/useQueryEmployeeData'
+import useDeleteEmployeeData from '../../../apiHooks/useDeleteEmployeeData'
+import { useQueryClient } from '@tanstack/react-query'
+import useEditEmployeeData from '../../../apiHooks/useEditEmployeeData'
 
 function EmployeeList() {
-  const dispatch = useAppDispatch()
+  const queryClient = useQueryClient()
   const [editEmployeeIndex, setEditEmployeeIndex] = useState<number | null>(
     null
   )
 
-  const employeeData = useAppSelector((state) => state.employee.employeeData)
-  const isLoading = useAppSelector((state) => state.employee.isLoading)
+  //社員一覧
+  const { isLoading, data, queryKey } = useQueryEmployeeData({
+    enabled: true,
+  })
 
-  useEffect(() => {
-    dispatch(fetchEmployeeData())
-  }, [])
+  //削除
+  const { mutate: deleteMutate } = useDeleteEmployeeData({
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey)
+    },
+  })
+
+  const { mutate: editMutate } = useEditEmployeeData({
+    onSuccess: () => {
+      queryClient.invalidateQueries(queryKey)
+    },
+  })
 
   //編集ボタンが押された時
   const handleEditClick = (index: number) => {
@@ -35,8 +44,7 @@ function EmployeeList() {
     id
   ) => {
     if (typeof id === 'undefined') return
-    await dispatch(editEmployeeData({ updatedEmployeeData, id }))
-    await dispatch(fetchEmployeeData()) //編集して上書きしてきたデータを取得
+    editMutate({ updatedEmployeeData, id })
     setEditEmployeeIndex(null)
   }
 
@@ -48,8 +56,7 @@ function EmployeeList() {
   //削除ボタンが押された時
   const handleDeletButton = async (docId: string | undefined) => {
     if (typeof docId === 'undefined') return
-    await dispatch(deleteEmployeeData(docId))
-    await dispatch(fetchEmployeeData()) //古いデータを見た目からもなくす
+    deleteMutate(docId)
     setEditEmployeeIndex(null)
   }
 
@@ -58,14 +65,16 @@ function EmployeeList() {
       {isLoading && <LoadingSpinner />}
       <Layout>
         <div className="employeeListBox">
-          <EmployeeInfoList
-            employeeData={employeeData}
-            handleEditClick={handleEditClick}
-            handleSaveButtonClick={handleSaveButtonClick}
-            handleCloseButton={handleCloseButton}
-            handleDeleteButton={handleDeletButton}
-            editEmployeeIndex={editEmployeeIndex}
-          />
+          {Array.isArray(data) && (
+            <EmployeeInfoList
+              employeeData={data}
+              handleEditClick={handleEditClick}
+              handleSaveButtonClick={handleSaveButtonClick}
+              handleCloseButton={handleCloseButton}
+              handleDeleteButton={handleDeletButton}
+              editEmployeeIndex={editEmployeeIndex}
+            />
+          )}
         </div>
       </Layout>
     </>
