@@ -1,7 +1,9 @@
 # HR App 　人事管理アプリ ／MySQL／Tanstack Query✍️
 
-社員情報を登録、閲覧、検索、編集できるアプリです。  
-※Reduxの代わりにTanstack Queryを使い書き換えたバージョン
+社員情報を登録、閲覧、検索、編集できるアプリです。 (未デプロイ)
+
+[こちら](https://github.com/michiru-dev/HR-App-Cloud-FireStore)（デプロイ済）を元に書き換えています。<br>変更点：Cloud Firestore→MySQL<br>　　　　Redux→Tanstack Query
+
 
 #### フロントエンド
 
@@ -17,6 +19,8 @@
 - Node.js 20.2
 - Express 4.18.2
 - Typescript 5.1.3
+- ~~Firebase 9.21~~
+  - ~~Cloud Firestore~~
 
 #### データベース
 
